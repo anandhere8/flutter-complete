@@ -1,4 +1,4 @@
-# flutter_complete_guide
+# flutter_complete
 
 A new Flutter project.
 
