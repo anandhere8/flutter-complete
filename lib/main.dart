@@ -4,34 +4,41 @@ void main() {
   runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
-  int countOfPressed = 0;
+class MyApp extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() {
+    // TODO: implement createState
+    return MyAppState();
+  }
+}
+
+class MyAppState extends State<MyApp> {
+  int questionNumber = 0;
 
   void answerQuestion() {
-    countOfPressed++;
-    print('No of times the button pressed ${countOfPressed}');
+    setState(() {
+      questionNumber++;
+      questionNumber %= 2;
+    });
+    print('Question No. ${questionNumber}\n');
   }
 
   @override
   Widget build(BuildContext context) {
+    var questions = [
+      "What's your name ?",
+      "What's your age  ?",
+    ];
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
           title: Text('Flutter App'),
         ),
         body: Column(children: [
-          Text('No of times the button pressed ${countOfPressed}'),
+          Text(questions[questionNumber]),
           ElevatedButton(
-            child: Text('Answer 1'),
+            child: Text('Answer'),
             onPressed: answerQuestion,
-          ),
-          ElevatedButton(
-            child: Text('Answer 2'),
-            onPressed: null,
-          ),
-          ElevatedButton(
-            child: Text('Answer 3'),
-            onPressed: null,
           ),
         ]),
       ),
