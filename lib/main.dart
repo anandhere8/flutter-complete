@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import './question.dart';
-import './answer.dart';
+import './quiz.dart';
+import './result.dart';
 
 void main() {
   runApp(MyApp());
@@ -17,11 +17,15 @@ class MyApp extends StatefulWidget {
 
 class MyAppState extends State<MyApp> {
   int questionNumber = 0;
+  int score = 0;
+
+  void updateScore(int tmp) {
+    score += tmp;
+  }
 
   void answerQuestion() {
     setState(() {
       questionNumber++;
-      questionNumber %= 2;
     });
     print('Question No. ${questionNumber}\n');
   }
@@ -31,11 +35,19 @@ class MyAppState extends State<MyApp> {
     const questions = [
       {
         'questionText': "What's your fav color ?",
-        'answer': ['Black', 'Blue', 'Brown'],
+        'answer': [
+          {'text': 'Black', 'score': 10},
+          {'text': 'Blue', 'score': 5},
+          {'text': 'Brown', 'score': 1}
+        ],
       },
       {
         'questionText': "What's your number ?",
-        'answer': ['1', '2', '4'],
+        'answer': [
+          {'text': '1', 'score': 1},
+          {'text': '2', 'score': 2},
+          {'text': '4', 'score': 4}
+        ],
       },
     ];
     return MaterialApp(
@@ -43,14 +55,13 @@ class MyAppState extends State<MyApp> {
         appBar: AppBar(
           title: Text('Flutter App'),
         ),
-        body: Column(children: [
-          Question(
-            questions[questionNumber]['questionText'].toString(),
-          ),
-          ...(questions[questionNumber]['answer'] as List<String>).map((e) {
-            return Answer(answerQuestion, e);
-          }).toList(),
-        ]),
+        body: questionNumber < questions.length
+            ? Quiz(
+                questions,
+                answerQuestion,
+                questionNumber,
+              )
+            : Result(score),
       ),
     );
   }
